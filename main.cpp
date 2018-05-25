@@ -10,6 +10,7 @@
 #include "Client.hpp"
 #include "ServerPacket.hpp"
 #include "ClientPacket.hpp"
+#include <unistd.h>
 
 
 
@@ -66,8 +67,15 @@ int StartGame(int Mode, RenderWindow& window)
 			case 1: window.close(); return EXIT; break;
 			case 2:  break;
 			case 3:
-				Server server;
-				server.serverStart();
+				pid_t pid = fork ();
+				if (pid == 0) {
+					Server server;
+					server.serverStart();
+				} else {
+					Client client;
+					IpAddress ip = IpAddress::getLocalAddress();
+					client.startClient(ip, 0, window);
+				}
 				//Client client;
 				//IpAddress ip("172.20.10.1");
 				return EXIT;

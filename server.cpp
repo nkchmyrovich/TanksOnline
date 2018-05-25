@@ -4,8 +4,8 @@ using namespace sf;
 
 Server::Server () :
 	isRunning (true),
-	listener (),
-	socket (),
+	listeners (CLIENTS_AMOUNT),
+	sockets (CLIENTS_AMOUNT),
 	clock (),
 	clients (),
 	players (),
@@ -50,9 +50,9 @@ void Server::threadFunction (int index) {
 	
 */
 	Packet packet; //создаём пакет
-	listener.listen(ports[index].port);
-	listener.accept(socket);
-	socket.receive(packet); //получаем пакет от клиента из порта
+	listeners[index].listen(ports[index].port);
+	listeners[index].accept(sockets[index]);
+	sockets[index].receive(packet); //получаем пакет от клиента из порта
 	receivedPackets[ids[index]] = packet; //помещаем полученный пакет в std::map
 	std::cout << index << std::endl;
 
@@ -67,7 +67,7 @@ void Server::checkPorts () {
 	//threadMemFunc f = &Server::threadFunction; // создание указателя на функцию-член класса
 											   //но этот метод не работает
 	for (auto& it : threads) {
-		it = std::thread ([this, i] {this->threadFunction(i);}); //запускаем треды для каждого клиента
+		it = std::thread ([this, i] { this->threadFunction(i);}); //запускаем треды для каждого клиента
 		i++;
 	}
 	for (auto& it : threads) {
@@ -100,6 +100,7 @@ void Server::mainLoop () {
 			it.second.setMoveTimer(time);
 		}
 		packServerData();
+		sendServerData();
 
 	}
 }
@@ -157,8 +158,7 @@ void Server::updatePlayer (int id, float time) {
 		players[id].setSpriteAngle(-45.0f);		
 		players[id].setState(rightDown);
 	}
-	players[id].update(time, mapa, clients[id].getMouseX(), clients[id].getMouseY());
-		
+	players[id].update(time, mapa, clients[id].getMouseX(), clients[id].getMouseY());	
 }
 
 void Server::serverStart () {
@@ -201,7 +201,7 @@ void Server::sendServerData () {
 }
 
 void Server::threadSendFunction (int index) {
-	listener.listen(ports[index].port);// не уверен на счёт этого
-	listener.accept(socket);//
-	socket.send(serverPacket);
+	listeners[index].listen(ports[index].port);// не уверен на счёт этого
+	listeners[index].accept(sockets[index]);//
+	sockets[index].send(serverPacket);
 }

@@ -12,6 +12,7 @@ using namespace sf;
 
 class Client
 {
+	enum PROPERTIES { HEIGHT_MAP = 25};
 
 	TcpSocket socket;
 
@@ -36,6 +37,36 @@ class Client
 	void sendClientData (); //создание ClientPacket, упаковка в packetToSend, отпрака на сервер 
 
 	void mainLoop (RenderWindow& window); //зацикливание
+
+	String mapPlan[HEIGHT_MAP] = {
+	"0000000000000000000000000000000000000000",
+	"0                                      0",
+	"0   s                                  0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                0                     0",
+	"0                                      0",
+	"0                                      0",
+	"0                                      0",
+	"0                                      0",
+	"0                                      0",
+	"0                                      0",
+	"0                                      0",
+	"0000000000000000000000000000000000000000",
+	};
+
+	map mapa;
 
 	
 

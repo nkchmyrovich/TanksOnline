@@ -11,7 +11,7 @@ struct Ports {
 	}
 };
 
-const Ports ports [CLIENTS_AMOUNT] = { { 55000, true}, {55001, true}};
+const Ports ports [CLIENTS_AMOUNT] = { { 2000, true}, {2001, true}};
 
 const int ids [CLIENTS_AMOUNT] = {0, 1};
 

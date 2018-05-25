@@ -25,8 +25,8 @@ class Server
 
 	std::vector<int> clientsIps;
 
-	TcpListener listener;
-	TcpSocket socket;
+	std::vector<TcpListener> listeners;
+	std::vector<TcpSocket> sockets;
 
 	Clock clock;
 

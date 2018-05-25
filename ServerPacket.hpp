@@ -11,6 +11,7 @@ struct PlayerData {
 	float playerY;
 	float playerAngle;
 	float cannonAngle;
+	float time;
 };
 
 #define CLIENTS_AMOUNT 2

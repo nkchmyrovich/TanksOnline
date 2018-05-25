@@ -7,7 +7,8 @@ Client::Client () :
 	receivedPacket (),
 	packetToSend (),
 	isRunning (true),
-	players ()
+	players (),
+	mapa ("map.png", mapPlan)
 {
 	players.resize(CLIENTS_AMOUNT);
 	Image playerImage;
@@ -80,7 +81,13 @@ void Client::stopClient () {
 }
 
 void Client::draw (RenderWindow& window) {
-
+	window.clear(Color::Red);
+	mapa.print(window);
+	for (auto& it : players) {
+		it.draw(window);
+	}
+	window.display();
+	//дописать сдвиг камеры для клиента (идентификацию клиента у клиента)
 }
 
 void Client::startClient (IpAddress& ip, int id, RenderWindow& window) {
